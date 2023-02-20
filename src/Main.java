@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -290,6 +287,152 @@ public class Main {
     public static void hackFile(String path){                   // статистический взлом
         writeNewFile(hacking(readFile(path)));
     }
+    public static void manualEncrypt() {                    // метод  шифрования для ввода данных с консоли
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))){
+            System.out.println("Please Enter Path+FileName to Encrypt File");
+            String file = "";
+            boolean len = false;
+            do {
+                file = reader.readLine();
+                if (file.length() < 4) {
+                    System.err.println("Path+FileName too short");
+                    System.out.println("Please Enter Path+FileName to Encrypt File");
+
+                }
+                else if( !file.substring(file.length()-4).equals(".txt")) {
+                    System.err.println("File is Not txt");
+                    System.out.println("Please Enter Path+FileName to Encrypt File");
+                }
+                else { len = true;}
+
+            }
+            while(!len);
+
+            System.out.println("Please Enter СipherIndex to Encrypt File");
+            int indexNum = -1;
+            boolean ind = false;
+            do {
+                String index = reader.readLine();
+                try {
+                    indexNum = Integer.parseInt(index);
+                }
+                catch (Exception e){
+                    System.err.println("Not integer");
+                }
+                if (indexNum < 0 || indexNum >100) {
+                    System.err.println("Enter Integer CipherIndex >0 and less then 100 ");
+                    System.out.println("Please Enter СipherIndex to Encrypt File");
+
+                }
+                else { ind = true;}
+            }
+            while(!ind);
+            encryptFile(file, indexNum);
+            System.out.println("Encrypted file: outputText.txt ");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void manualDecrypt() {                    // метод  расшифровки для ввода данных с консоли
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))){
+            System.out.println("Please Enter Path+FileName to Decrypt File");
+            String file = "";
+            boolean len = false;
+            do {
+                file = reader.readLine();
+                if (file.length() < 4) {
+                    System.err.println("Path+FileName too short");
+                    System.out.println("Please Enter Path+FileName to Decrypt File");
+
+                }
+                else if( !file.substring(file.length()-4).equals(".txt")) {
+                    System.err.println("File is Not txt");
+                    System.out.println("Please Enter Path+FileName to Decrypt File");
+                }
+                else { len = true;}
+            }
+            while(!len);
+
+            System.out.println("Please Enter СipherIndex to Decrypt File");
+            int indexNum = -1;
+            boolean ind = false;
+            do {
+                String index = reader.readLine();
+                try {
+                    indexNum = Integer.parseInt(index);
+                }
+                catch (Exception e){
+                    System.err.println("Not integer");
+                }
+                if (indexNum < 0 || indexNum >100) {
+                    System.err.println("Enter Integer CipherIndex >0 and less then 100 ");
+                    System.out.println("Please Enter СipherIndex to Decrypt File");
+                }
+                else { ind = true;}
+            }
+            while(!ind);
+            decodeFile(file, indexNum);
+            System.out.println("Encrypted file: outputText.txt ");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void manualBrutForce() {                      // метод взлома Брут Форс для ввода данных с консоли
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))){
+            System.out.println("Please Enter Path+FileName to BrutForce File");
+            String file = "";
+            boolean len = false;
+            do {
+                file = reader.readLine();
+                if (file.length() < 4) {
+                    System.err.println("Path+FileName too short");
+                    System.out.println("Please Enter Path+FileName to BrutForce File");
+                }
+                else if( !file.substring(file.length()-4).equals(".txt")) {
+                    System.err.println("File is Not txt");
+                    System.out.println("Please Enter Path+FileName to BrutForce File");
+                }
+                else { len = true;}
+            }
+            while(!len);
+            forceFile(file);
+            System.out.println("Encrypted file: outputText.txt ");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void manualHacking() {                    // метод взлома по стилистическому анализу для ввода данных с консоли
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))){
+            System.out.println("Please Enter Path+FileName to Hack File");
+            String file = "";
+            boolean len = false;
+            do {
+                file = reader.readLine();
+                if (file.length() < 4) {
+                    System.err.println("Path+FileName too short");
+                    System.out.println("Please Enter Path+FileName to Hack File");
+                }
+                else if( !file.substring(file.length()-4).equals(".txt")) {
+                    System.err.println("File is Not txt");
+                    System.out.println("Please Enter Path+FileName to Hack  File");
+                }
+                else { len = true;}
+            }
+            while(!len);
+            hackFile(file);
+            System.out.println("Encrypted file: outputText.txt ");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) {
 
     }

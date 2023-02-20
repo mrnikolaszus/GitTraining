@@ -29,6 +29,55 @@ public class Main {
         return decText;
     }       // Конец: Дешифровки
 
+    public static boolean isDecrypted(String text) {        // Начало: Анализ стилистики текста, расшифрован ли текст?
+        text = text.toLowerCase();
+        int badStyle = 0;                     // проверяем как часто, после знаков препинаний не было пробела
+        int noVowels = 0;                     // проверяем как часто в словах нет гласных (последовательность букв без гласных)
+        int noSpaces = 0;                    // проверяем вообще как часто слова делятся пробелами
+        char[] vowels = {'a', 'e', 'i', 'u', 'o'};
+        for (int i = 1; i < text.length() - 1; i++) {
+            if (text.charAt(i) == ',' && text.charAt(i + 1) != ' ') {
+                badStyle = badStyle + 2;
+            }
+            if (text.charAt(i) != ' ') {
+                noSpaces++;
+            }
+            if (text.charAt(i) == ' ') {
+                noSpaces = 0;
+            }
+            if (noSpaces > 15) {
+                return false;
+            }
+            if (text.charAt(i) == '!' && text.charAt(i + 1) != ' ') {
+                badStyle++;
+            }
+            if (text.charAt(i) == '?' && text.charAt(i + 1) != ' ') {
+                badStyle++;
+            }
+            if (text.charAt(i) == ':' && text.charAt(i + 1) != ' ') {
+                badStyle++;
+            }
+            if (text.charAt(i) == '.' && text.charAt(i + 1) != ' ') {
+                badStyle++;
+            }
+            if (text.charAt(i) == '"' && (text.charAt(i + 1) != ' ' || text.charAt(i - 1) != ' ')) {
+                badStyle++;
+            }
+
+            if (noVowels > 10) {
+                badStyle = badStyle + 2;
+                noVowels = 0;
+            }
+            String test = String.valueOf(text.charAt(i));
+            if (!(new String(vowels).contains(test))) {
+                noVowels++;
+            } else {
+                noVowels = 0;
+            }
+        }
+
+        return badStyle < 2; // чем выше индекс задаем, тем больше ошибок в тексте допустимо, но тем больше шанс, что не определит, что текст расшифрован.
+    }       // Конец: Анализ стилистики текста, расшифрован ли текст?
 
     public static void main(String[] args) {
 

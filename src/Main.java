@@ -3,7 +3,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+    public static void main(String[] args) {
+        // Ручной ввод с консоли(ввод имени пути Инпут и индекса, сохраняется итог по умолчанию: "outputText.txt" )
+//      manualEncrypt();
+//      manualDecrypt();
+//      manualBrutForce();
+//      manualHacking();
 
+
+        // методы для запуска без ручного ввода в консоль
+// для работы нужно указать путь к файлу - фаил вывода создается по умолчанию: "outputText.txt"
+// для работы используются 4 метода:
+//         encryptFile("путь файла", индекс);
+//         decodeFile("путь файла", индекс);
+//         forceFile("путь файла");
+//         hackFile("путь файла");
+    }
     public static final String alphabet = "abcdefghijklmnopqrstuvwxyz.,\":-!? ";
     // test commit
     public static String encrypt(String text, int shiftKey) {  // Начало: Шифрования
@@ -431,9 +446,5 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void main(String[] args) {
-
     }
 }

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Main {
 
     public static final String alphabet = "abcdefghijklmnopqrstuvwxyz.,\":-!? ";
@@ -104,6 +106,140 @@ public class Main {
         }
         return decText;
     }       // Конец: Взлом BruteForce
+
+    public static String hacking(String encText) {   // Начало: Взлом по анализу
+        String xxx = encText;
+        // пробел - самый частый символ, 33 - index в алфавите
+        // e - 2ой самый частый символ, 4 - index в алфавите
+        // a - 3тий самый частый символ, 0 - индекс в алфавите
+        // o - 4ый самый частый символ, - 14 индекс в алфавите
+        char charOne = ' ';
+        int countOne = 0;
+        char charTwo = 'e';
+        int countTwo = 0;
+        char charThree = 'a';
+        int countThree = 0;
+        char charFour = 'o';
+        int countFour = 0;
+        char temp;
+        int tempCount = 0;
+        ArrayList<Character> chars = new ArrayList<Character>();   // для поиска самых частых символов используем массив
+        for (char c : encText.toCharArray()) {
+            chars.add(c);
+        }
+        for (int i = 0; i < chars.size(); i++) {
+            temp = chars.get(i);
+            int j = 0;
+            while (j < chars.size()) {
+                if (temp == chars.get(j)) {
+
+                    tempCount++;
+                    j++;
+                } else j++;
+            }
+            if (tempCount > countOne) {
+                charFour = charThree;
+                countFour = countThree;
+                charThree = charTwo;
+                countThree = countTwo;
+                charTwo = charOne;
+                countTwo = countOne;
+                charOne = temp;
+                countOne = tempCount;
+                tempCount = 0;
+            } else if (tempCount < countOne && tempCount > countTwo) {
+                charFour = charThree;
+                countFour = countThree;
+                charThree = charTwo;
+                countThree = countTwo;
+                charTwo = temp;
+                countTwo = tempCount;
+                tempCount = 0;
+            } else if (tempCount < countOne && tempCount < countTwo && tempCount > countThree) {
+                charFour = charThree;
+                countFour = countThree;
+                charThree = temp;
+                countThree = tempCount;
+                tempCount = 0;
+            } else if (tempCount < countOne && tempCount < countTwo && tempCount < countThree && tempCount > countFour) {
+                charFour = temp;
+                countFour = tempCount;
+                tempCount = 0;
+            } else {
+                tempCount = 0;
+            }
+
+            for (int k = 0; k < chars.size(); k++) {
+                if (chars.get(k) == temp) {
+                    chars.remove(k);
+                    k--;
+                }
+            }
+            i--;
+        }
+
+        ArrayList<Character> charsTest = new ArrayList<Character>(); // массив самых часто встреающихся чаров
+        charsTest.add(charOne);
+        charsTest.add(charTwo);
+        charsTest.add(charThree);
+        charsTest.add(charFour);
+
+        ArrayList<Integer> keyValTests = new ArrayList<>(16);   // создаем массив возможных совпадений на основании символов (запишем туда 16 индексов дял проверки)
+        for (int i = 0; i < charsTest.size(); i++) {
+
+            int charPosition1 = alphabet.indexOf(charsTest.get(i));         // четыре самые частые буквы в шифре * четыре самые частые буквы (о,e,a,пробел) = 16 возможных
+            int keyVal1 = (charPosition1 - alphabet.indexOf(' ')) % 34;
+            if (keyVal1 < 0) {
+                keyVal1 = alphabet.length() + keyVal1;
+            }
+            keyValTests.add(keyVal1);
+
+            int charPosition2 = alphabet.indexOf(charsTest.get(i));
+            int keyVal2 = (charPosition2 - alphabet.indexOf('e')) % 34;
+            if (keyVal2 < 0) {
+                keyVal2 = alphabet.length() + keyVal2;
+            }
+            keyValTests.add(keyVal2);
+
+            int charPosition3 = alphabet.indexOf(charsTest.get(i));
+            int keyVal3 = (charPosition3 - alphabet.indexOf('a')) % 34;
+            if (keyVal3 < 0) {
+                keyVal3 = alphabet.length() + keyVal3;
+            }
+            keyValTests.add(keyVal3);
+
+            int charPosition4 = alphabet.indexOf(charsTest.get(i));
+            int keyVal4 = (charPosition4 - alphabet.indexOf('o')) % 34;
+            if (keyVal4 < 0) {
+                keyVal4 = alphabet.length() + keyVal4;
+            }
+            keyValTests.add(keyVal4);
+        }
+
+        int[] keyValTry = new int[3];      // индексы(ключи шифра) которые появлялись чаще всего за 16 попыток, применим только самые частые и посмотрим на текст
+        int tempMax = 0;
+        int z = 0;
+        for (int i = 0; i < keyValTests.size(); i++) {
+            tempMax = keyValTests.get(i);
+            keyValTests.remove(i);
+            i++;
+            if (keyValTests.contains(tempMax)) {
+                keyValTry[z] = tempMax;
+                z++;
+            }
+            if (z >= 3) {
+                break;
+            }
+        }
+
+        for (int i = 0; i < keyValTry.length; i++) {     // В итоге, проверяем индексы от самых частых совпадений на зашифрованном тексте
+            if (isDecrypted(decrypt(xxx, keyValTry[i]))) {
+                xxx = decrypt(xxx, keyValTry[i]);
+                return xxx;
+            }
+        }
+        return "не удалось расшифровать";
+    }       // Конец: Взлом по анализу
     public static void main(String[] args) {
 
     }

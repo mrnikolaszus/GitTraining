@@ -79,6 +79,31 @@ public class Main {
         return badStyle < 2; // чем выше индекс задаем, тем больше ошибок в тексте допустимо, но тем больше шанс, что не определит, что текст расшифрован.
     }       // Конец: Анализ стилистики текста, расшифрован ли текст?
 
+    public static String brutForce(String encText) {    // Начало: Взлом BruteForce
+        encText = encText.toLowerCase();
+        String decText = ",,,,";
+        int index = 33;
+        while (!isDecrypted(encText)) {
+            decText = "";
+            for (int i = 0; i < encText.length(); i++) {
+                int charPosition = alphabet.indexOf(encText.charAt(i));
+                int keyVal = (charPosition - index) % 34;
+                if (keyVal < 0) {
+                    keyVal = alphabet.length() + keyVal;
+                }
+                char replaceChar = alphabet.charAt(keyVal);
+                decText += replaceChar;
+            }
+            index--;
+            if (isDecrypted(decText)) {
+                return decText;
+            }
+            if (index < 0) {
+                return "Не удалось расшифровать";
+            }
+        }
+        return decText;
+    }       // Конец: Взлом BruteForce
     public static void main(String[] args) {
 
     }

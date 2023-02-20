@@ -277,6 +277,19 @@ public class Main {
             System.err.println("ошибка записи файла");
         }
     }
+
+    public static void decodeFile(String path, int index){                 //  расшифврока
+        writeNewFile(decrypt(readFile(path), index));
+    }
+    public static void encryptFile(String path, int index){                // кодирование
+        writeNewFile(encrypt(readFile(path), index));
+    }
+    public static void forceFile(String path){                  // взлом bruteForce
+        writeNewFile(brutForce(readFile(path)));
+    }
+    public static void hackFile(String path){                   // статистический взлом
+        writeNewFile(hacking(readFile(path)));
+    }
     public static void main(String[] args) {
 
     }

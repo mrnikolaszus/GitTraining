@@ -1,4 +1,9 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -240,6 +245,38 @@ public class Main {
         }
         return "не удалось расшифровать";
     }       // Конец: Взлом по анализу
+
+    public static String readFile(String path) {                        // чтение файла, подается путь. (сделал отдельным методом)
+        ArrayList<Integer> list = new ArrayList<>();
+        try (FileInputStream fis = new FileInputStream(path)) {
+            while (fis.available() > 0) {
+                list.add(fis.read());
+            }
+        } catch (IOException e) {
+            System.err.println("ошибка чтения файла");
+        }
+        String text = "";
+        for (int x : list) {
+            text = text + ((char) x);
+        }
+        return text;
+    }
+    public static void writeNewFile(String text) {                    // создание файла и запись в фаил подаваемого текста. (сделал отдельным методом)
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < text.length(); i++) {
+            list.add((int) text.charAt(i));
+        }
+
+        File fileOutput = new File("outputText.txt");
+        try (FileOutputStream fos = new FileOutputStream(fileOutput)) {
+            for (int i = 0; i < list.size(); i++) {
+                fos.write((char) ((list.get(i)) - 0));
+            }
+
+        } catch (IOException e) {
+            System.err.println("ошибка записи файла");
+        }
+    }
     public static void main(String[] args) {
 
     }
